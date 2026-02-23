@@ -1,0 +1,22 @@
+.appShell {
+  width: min(100vw, 420px);
+  height: 100dvh;
+  margin: 0 auto;
+  background: var(--color-surface);
+  box-shadow: 0 20px 50px -30px rgb(0 0 0 / 45%);
+  position: relative;
+}
+
+.appContent {
+  height: 100%;
+  padding: 16px 12px calc(86px + env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+.pageVisible {
+  height: 100%;
+}
+
+.pageHidden {
+  display: none;
+}

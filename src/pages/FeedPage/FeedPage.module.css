@@ -1,0 +1,28 @@
+.page {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+}
+
+.list {
+  height: 100%;
+  padding-right: 0;
+}
+
+.loader {
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.endLabel {
+  margin: 0;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: var(--color-muted);
+}

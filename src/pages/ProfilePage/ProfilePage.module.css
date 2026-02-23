@@ -1,0 +1,21 @@
+.page {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: start;
+  gap: 14px;
+}
+
+.subscriptionsList {
+  height: 100%;
+}
+
+.emptyState {
+  margin: 0;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 14px;
+}

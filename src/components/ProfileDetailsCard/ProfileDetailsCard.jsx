@@ -1,4 +1,4 @@
-import styles from './ProfileDetailsCard.module.css'
+﻿import styles from './ProfileDetailsCard.module.css'
 
 const StatCell = (props) => {
   const {
@@ -48,7 +48,13 @@ const ProfileDetailsCard = (props) => {
       </div>
 
       {!profile.isCurrentUser && (
-        <button className={styles.subscribeButton} type="button" onClick={() => onToggleSubscribe(profile)}>
+        <button
+          className={`${styles.subscribeButton} ${
+            profile.isSubscribed ? styles.unsubscribeButton : styles.subscribeActionButton
+          }`}
+          type="button"
+          onClick={() => onToggleSubscribe(profile)}
+        >
           {profile.isSubscribed ? 'Отписаться' : 'Подписаться'}
         </button>
       )}

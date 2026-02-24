@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import BottomSheet from '../../components/BottomSheet/BottomSheet'
 import List from '../../components/List/List'
 import ProfileDetailsCard from '../../components/ProfileDetailsCard/ProfileDetailsCard'
@@ -7,20 +7,26 @@ import ScreenTitle from '../../components/ScreenTitle/ScreenTitle'
 import { currentUserProfile, profilesCatalog, subscriptionsMock } from '../../data/profiles'
 import styles from './ProfilePage.module.css'
 
+const profilesById = Object.fromEntries(profilesCatalog.map((profile) => [profile.id, profile]))
+
 const ProfilePage = () => {
   const [subscriptions, setSubscriptions] = useState(subscriptionsMock)
   const [isSubscriptionsOpen, setIsSubscriptionsOpen] = useState(false)
   const [selectedProfile, setSelectedProfile] = useState(null)
 
-  const profilesById = useMemo(() => {
-    const map = {}
+  const updateSelectedProfile = (profileId, nextSubscribedState) => {
+    setSelectedProfile((prev) => {
+      if (!prev || prev.id !== profileId) {
+        return prev
+      }
 
-    profilesCatalog.forEach((profile) => {
-      map[profile.id] = profile
+      const value = typeof nextSubscribedState === 'function'
+        ? nextSubscribedState(prev.isSubscribed)
+        : nextSubscribedState
+
+      return { ...prev, isSubscribed: value }
     })
-
-    return map
-  }, [])
+  }
 
   const profileForPage = {
     ...currentUserProfile,
@@ -29,14 +35,7 @@ const ProfilePage = () => {
 
   const unsubscribe = (profileId) => {
     setSubscriptions((prev) => prev.filter((item) => item.id !== profileId))
-
-    setSelectedProfile((prev) => {
-      if (!prev || prev.id !== profileId) {
-        return prev
-      }
-
-      return { ...prev, isSubscribed: false }
-    })
+    updateSelectedProfile(profileId, false)
   }
 
   const toggleSubscribe = (profile) => {
@@ -51,13 +50,7 @@ const ProfilePage = () => {
       return [...prev, { ...nextProfile, isSubscribed: true }]
     })
 
-    setSelectedProfile((prev) => {
-      if (!prev || prev.id !== profile.id) {
-        return prev
-      }
-
-      return { ...prev, isSubscribed: !prev.isSubscribed }
-    })
+    updateSelectedProfile(profile.id, (current) => !current)
   }
 
   const closeSubscriptionsSheet = () => {

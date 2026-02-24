@@ -1,19 +1,12 @@
-import { forwardRef } from 'react'
 import styles from './List.module.css'
 
-const List = forwardRef((props, ref) => {
+const List = (props) => {
   const {
     children,
     className = '',
   } = props
 
-  return (
-    <div ref={ref} className={`${styles.list} ${className}`}>
-      {children}
-    </div>
-  )
-})
-
-List.displayName = 'List'
+  return <div className={`${styles.list} ${className}`}>{children}</div>
+}
 
 export default List

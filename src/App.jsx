@@ -6,34 +6,32 @@ import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SearchPage from './pages/SearchPage/SearchPage'
 import styles from './App.module.css'
 
-const FEED_PATH = '/feed'
-const SEARCH_PATH = '/search'
-const PROFILE_PATH = '/profile'
+const ROUTES = {
+  ROOT: '/',
+  FEED: '/feed',
+  SEARCH: '/search',
+  PROFILE: '/profile',
+}
 
-const VALID_PATHS = new Set([FEED_PATH, SEARCH_PATH, PROFILE_PATH])
+const VALID_PATHS = new Set([ROUTES.FEED, ROUTES.SEARCH, ROUTES.PROFILE])
+const SIDE_PAGE_COMPONENTS = {
+  [ROUTES.SEARCH]: SearchPage,
+  [ROUTES.PROFILE]: ProfilePage,
+}
 
 const App = () => {
-  const location = useLocation()
+  const { pathname } = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (location.pathname === '/' || !VALID_PATHS.has(location.pathname)) {
-      navigate(FEED_PATH, { replace: true })
+    if (pathname === ROUTES.ROOT || !VALID_PATHS.has(pathname)) {
+      navigate(ROUTES.FEED, { replace: true })
     }
-  }, [location.pathname, navigate])
+  }, [navigate, pathname])
 
-  const activePath = VALID_PATHS.has(location.pathname) ? location.pathname : FEED_PATH
-  const isFeedPage = activePath === FEED_PATH
-
-  let sidePage = null
-
-  if (activePath === SEARCH_PATH) {
-    sidePage = <SearchPage />
-  }
-
-  if (activePath === PROFILE_PATH) {
-    sidePage = <ProfilePage />
-  }
+  const activePath = VALID_PATHS.has(pathname) ? pathname : ROUTES.FEED
+  const isFeedPage = activePath === ROUTES.FEED
+  const SidePageComponent = SIDE_PAGE_COMPONENTS[activePath]
 
   return (
     <div className={styles.appShell}>
@@ -42,7 +40,11 @@ const App = () => {
           <FeedPage />
         </section>
 
-        {!isFeedPage && <section className={styles.pageVisible}>{sidePage}</section>}
+        {!isFeedPage && SidePageComponent && (
+          <section className={styles.pageVisible}>
+            <SidePageComponent />
+          </section>
+        )}
       </main>
 
       <BottomTabBar />

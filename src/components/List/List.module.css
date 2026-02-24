@@ -4,4 +4,5 @@
   display: grid;
   gap: 8px;
   padding-right: 2px;
+  overscroll-behavior: contain;
 }
